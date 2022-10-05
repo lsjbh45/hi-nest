@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, PrimaryColumn, OneToMany } from 'typeorm';
-import { Genre } from 'src/movies/entities/genre.entity';
+import { Genre } from './genre.entity';
 
 @Entity()
 export class Movie extends BaseEntity {
