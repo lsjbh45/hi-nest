@@ -33,7 +33,7 @@ input CreateMovieDto {
 }
 
 input UpdateMovieDto {
-  title: String!
-  year: Int!
-  genres: [String!]!
+  title: String
+  year: Int
+  genres: [String!]
 }

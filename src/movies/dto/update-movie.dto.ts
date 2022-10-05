@@ -3,17 +3,17 @@ import { IsString, IsNumber, IsOptional } from 'class-validator';
 
 @InputType()
 export class UpdateMovieDto {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   readonly title?: string;
 
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsNumber()
   readonly year?: number;
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @IsOptional()
   @IsString({ each: true })
   readonly genres?: string[];
