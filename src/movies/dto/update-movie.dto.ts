@@ -1,4 +1,20 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateMovieDto } from './create-movie.dto';
+import { Field, Int, InputType } from '@nestjs/graphql';
+import { IsString, IsNumber, IsOptional } from 'class-validator';
 
-export class UpdateMovieDto extends PartialType(CreateMovieDto) {}
+@InputType()
+export class UpdateMovieDto {
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  readonly title?: string;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  @IsNumber()
+  readonly year?: number;
+
+  @Field(() => [String], { nullable: true })
+  @IsOptional()
+  @IsString({ each: true })
+  readonly genres?: string[];
+}

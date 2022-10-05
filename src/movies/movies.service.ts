@@ -24,7 +24,7 @@ export class MoviesService {
       where: { id },
       relations: ['genres'],
     });
-    console.log(movie);
+
     if (!movie) {
       throw new NotFoundException(`Movie with ID ${id} not found.`);
     }
@@ -59,7 +59,7 @@ export class MoviesService {
     const { title, year, genres } = updateData;
     const movie = await this.getOne(id);
 
-    this.moviesRepository.save({
+    return this.moviesRepository.save({
       ...movie,
       title,
       year,

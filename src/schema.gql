@@ -1,0 +1,39 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Movie {
+  id: Int!
+  title: String!
+  year: Int!
+  genres: [Genre!]!
+}
+
+type Genre {
+  id: Int!
+  text: String!
+  movie: Movie!
+}
+
+type Query {
+  getMovies: [Movie!]!
+  getMovieById(id: Float!): Movie!
+}
+
+type Mutation {
+  createMovie(input: CreateMovieDto!): Movie!
+  updateMovie(id: Float!, input: UpdateMovieDto!): Movie!
+  deleteMovie(id: Float!): Boolean
+}
+
+input CreateMovieDto {
+  title: String!
+  year: Int!
+  genres: [String!]!
+}
+
+input UpdateMovieDto {
+  title: String
+  year: Int
+  genres: [String!]
+}
