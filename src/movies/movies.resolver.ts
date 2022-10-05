@@ -21,7 +21,7 @@ export class MoviesResolver {
     return this.moviesService.update(id, input);
   }
 
-  @Mutation(() => Movie)
+  @Mutation(() => Boolean, { nullable: true })
   async deleteMovie(@Args('id') id: number): Promise<void> {
     return this.moviesService.deleteOne(id);
   }
