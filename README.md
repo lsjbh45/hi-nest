@@ -1,3 +1,3 @@
 # Hi Nest!
 
-Learning how to build Enterprise NodeJS applications using NestJS
+NestJS + TypeORM + GraphQL Toy Project
