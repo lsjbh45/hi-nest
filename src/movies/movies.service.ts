@@ -37,9 +37,15 @@ export class MoviesService {
   }
 
   async create(movieData: CreateMovieDto) {
+    const { id } = await this.moviesRepository
+      .createQueryBuilder('movie')
+      .select('COALESCE(MAX(id), 0) + 1', 'id')
+      .getRawOne();
+
     const { title, year, genres } = movieData;
     return this.moviesRepository
       .create({
+        id,
         title,
         year,
         genres: genres.map((genre) => ({
