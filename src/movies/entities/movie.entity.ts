@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn, OneToMany } from 'typeorm';
+import { Genre } from 'src/movies/entities/genre.entity';
 
 @Entity()
 export class Movie extends BaseEntity {
@@ -8,5 +9,8 @@ export class Movie extends BaseEntity {
   title: string;
   @Column()
   year: number;
-  // genres: string[];
+  @OneToMany(() => Genre, (genre) => genre.movie, {
+    cascade: true,
+  })
+  genres: Genre[];
 }
