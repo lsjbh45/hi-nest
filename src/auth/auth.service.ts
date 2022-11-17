@@ -22,4 +22,10 @@ export class AuthService {
 
     return null;
   }
+
+  async login(user: User) {
+    return this.jwtService.sign({
+      email: user.email,
+    });
+  }
 }
