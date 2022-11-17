@@ -14,6 +14,6 @@ export class AuthController {
     @Body() _loginInput: LoginInput,
     @Request() req: Request | any,
   ): Promise<string> {
-    return this.authService.login(req.user as User);
+    return this.authService.getJwtAccessToken(req.user as User);
   }
 }
