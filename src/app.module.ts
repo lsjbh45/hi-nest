@@ -1,15 +1,24 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import * as dotenv from 'dotenv';
 import { MoviesModule } from './movies/movies.module';
 import { AppController } from './app.controller';
+import { validate } from './util/env.validation';
+import { AppLoggerMiddleware } from './middleware/logger.middleware';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 dotenv.config();
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: process.env.NODE_ENV === 'prod' ? '.env.prod' : '.env.dev',
+      validate,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -18,7 +27,8 @@ dotenv.config();
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [`${__dirname}/**/*.entity{.ts,.js}`],
-      // synchronize: true,
+      synchronize: process.env.NODE_ENV !== 'prod',
+      namingStrategy: new SnakeNamingStrategy(),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -29,4 +39,10 @@ dotenv.config();
   controllers: [AppController],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    if (process.env.NODE_ENV !== 'prod') {
+      consumer.apply(AppLoggerMiddleware).forRoutes('*');
+    }
+  }
+}
