@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import * as dotenv from 'dotenv';
@@ -10,6 +11,10 @@ dotenv.config();
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: process.env.NODE_ENV === 'prod' ? '.env.prod' : '.env.dev',
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -18,7 +23,7 @@ dotenv.config();
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [`${__dirname}/**/*.entity{.ts,.js}`],
-      // synchronize: true,
+      synchronize: process.env.NODE_ENV !== 'prod',
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
