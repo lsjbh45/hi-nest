@@ -8,6 +8,7 @@ import { MoviesModule } from './movies/movies.module';
 import { AppController } from './app.controller';
 import { validate } from './util/env.validation';
 import { AppLoggerMiddleware } from './middleware/logger.middleware';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ dotenv.config();
       database: process.env.DB_DATABASE,
       entities: [`${__dirname}/**/*.entity{.ts,.js}`],
       synchronize: process.env.NODE_ENV !== 'prod',
+      namingStrategy: new SnakeNamingStrategy(),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
