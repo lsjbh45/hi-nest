@@ -12,6 +12,8 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
+  readonly JWT_ACCESS_TOKEN_EXPIRATION_TIME = 1 * 60 * 60;
+
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.userService.findByEmail(email);
 
@@ -25,13 +27,17 @@ export class AuthService {
     return null;
   }
 
-  async getJwtAccessToken(user: User) {
+  async getCookieWithJwtAccessToken(user: User) {
     const payload = { email: user.email };
-    const token = this.jwtService.sign(payload, {
+    const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_SECRET_ACCESS'),
-      expiresIn: `1h`,
+      expiresIn: this.JWT_ACCESS_TOKEN_EXPIRATION_TIME,
     });
 
-    return token;
+    return {
+      accessToken,
+      httpOnly: true,
+      maxAge: this.JWT_ACCESS_TOKEN_EXPIRATION_TIME * 1000,
+    };
   }
 }

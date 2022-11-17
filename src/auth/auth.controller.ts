@@ -2,7 +2,6 @@ import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 import { AuthService } from './auth.service';
 import { LoginInput } from './dto/login.input';
-import { User } from 'src/user/entity/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -13,7 +12,9 @@ export class AuthController {
   async login(
     @Body() _loginInput: LoginInput,
     @Request() req: Request | any,
-  ): Promise<string> {
-    return this.authService.getJwtAccessToken(req.user as User);
+  ): Promise<any> {
+    const { accessToken, ...accessOption } =
+      await this.authService.getCookieWithJwtAccessToken(req.user);
+    req.res.cookie('ACCESS_TOKEN', accessToken, accessOption);
   }
 }
