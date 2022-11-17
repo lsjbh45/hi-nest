@@ -1,7 +1,8 @@
 import { User } from '../entity/user.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { CustomRepository } from 'src/database/typeorm-ex.decorator';
 
-@EntityRepository(User)
+@CustomRepository(User)
 export class UserRepository extends Repository<User> {
   async findByEmail(email: string): Promise<User> {
     return this.findOneBy({ email });
