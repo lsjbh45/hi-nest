@@ -9,7 +9,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request | any) => {
-          console.log(request.cookies);
           return request?.cookies?.ACCESS_TOKEN;
         },
       ]),
@@ -19,6 +18,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    return { userId: payload.sub, userName: payload.userName };
+    return { id: payload.id, email: payload.email };
   }
 }
