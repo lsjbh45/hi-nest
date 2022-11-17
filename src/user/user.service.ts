@@ -2,6 +2,7 @@ import { User } from './entity/user.entity';
 import { UserRepository } from './repository/user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
+import { hash, isHashValid } from 'src/util/encrypt';
 
 @Injectable()
 export class UserService {
@@ -18,13 +19,15 @@ export class UserService {
   }
 
   async setRefreshToken(refreshToken: string, id: number) {
-    await this.userRepository.update(id, { refreshToken });
+    await this.userRepository.update(id, {
+      refreshToken: await hash(refreshToken),
+    });
   }
 
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
     const user = await this.findById(id);
 
-    if (user.refreshToken === refreshToken) {
+    if (await isHashValid(refreshToken, user.refreshToken)) {
       return user;
     }
   }
