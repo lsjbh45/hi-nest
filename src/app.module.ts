@@ -6,6 +6,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import * as dotenv from 'dotenv';
 import { MoviesModule } from './movies/movies.module';
 import { AppController } from './app.controller';
+import { validate } from './util/env.validation';
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ dotenv.config();
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: process.env.NODE_ENV === 'prod' ? '.env.prod' : '.env.dev',
+      validate,
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
