@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -7,6 +7,7 @@ import * as dotenv from 'dotenv';
 import { MoviesModule } from './movies/movies.module';
 import { AppController } from './app.controller';
 import { validate } from './util/env.validation';
+import { AppLoggerMiddleware } from './middleware/logger.middleware';
 
 dotenv.config();
 
@@ -36,4 +37,10 @@ dotenv.config();
   controllers: [AppController],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    if (process.env.NODE_ENV !== 'prod') {
+      consumer.apply(AppLoggerMiddleware).forRoutes('*');
+    }
+  }
+}
