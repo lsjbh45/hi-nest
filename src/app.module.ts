@@ -9,6 +9,8 @@ import { AppController } from './app.controller';
 import { validate } from './util/env.validation';
 import { AppLoggerMiddleware } from './middleware/logger.middleware';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 dotenv.config();
 
@@ -35,6 +37,8 @@ dotenv.config();
       autoSchemaFile: `${process.cwd()}/src/schema.gql`,
     }),
     MoviesModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [],
