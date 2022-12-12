@@ -13,11 +13,27 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
   app.use(cookieParser());
+
+  let isDisableKeepAlive = false;
+  app.use(function (req, res, next) {
+    if (isDisableKeepAlive) {
+      res.set('Connection', 'close');
+    }
+    next();
+  });
+
   const configService = app.get(ConfigService);
   const port = configService.get('APP_PORT');
   app.listen(port, function () {
     process.send('ready');
+  });
+
+  process.on('SIGINT', function () {
+    isDisableKeepAlive = true;
+    app.close();
+    process.exit(0);
   });
 }
 bootstrap();
