@@ -28,7 +28,7 @@ export class UserService {
     const user = await this.findById(id);
 
     if (await isHashValid(refreshToken, user.refreshToken)) {
-      return user;
+      return user.toAuthUserDto();
     }
   }
 

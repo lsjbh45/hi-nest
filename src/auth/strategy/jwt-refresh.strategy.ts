@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from 'src/user/user.service';
-import { User } from 'src/user/entity/user.entity';
+import { AuthUserDto } from '../../user/dto/auth-user.dto';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
@@ -26,10 +26,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
     });
   }
 
-  async validate(
-    request: Request | any,
-    payload: any,
-  ): Promise<User | undefined> {
+  async validate(request: Request | any, payload: any): Promise<AuthUserDto> {
     const refreshToken = request?.cookies?.REFRESH_TOKEN;
     return this.userService.getUserIfRefreshTokenMatches(
       refreshToken,

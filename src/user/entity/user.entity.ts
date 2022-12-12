@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { AuthUserDto } from '../dto/auth-user.dto';
 
 @Entity()
 export class User {
@@ -15,4 +16,11 @@ export class User {
   @Column({ nullable: true })
   @Exclude()
   refreshToken?: string;
+
+  toAuthUserDto(): AuthUserDto {
+    return {
+      id: this.id,
+      email: this.email,
+    };
+  }
 }
