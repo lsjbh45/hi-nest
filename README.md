@@ -1,8 +1,49 @@
 # Hi Nest!
 
-NestJS + TypeORM + GraphQL Toy Project
+Nestjs Backend Toy Project
 
 ## Description
+
+- Nest.js Basics
+  - Controllers/Services
+  - DTOs and Validation
+  - Tests using Jest
+- TypeORM
+  - PostgreSQL Configuration
+  - Basic CRUD
+  - Table Join
+- GraphQL
+  - Migrating APIs using GraphQL
+- Configuration
+  - dotenv configuration
+  - cross-env configuration
+  - environment validation
+  - API call logging
+- Authentication
+  - JWT Token
+  - Refresh Token
+  - Password, Token Encryption
+  - Guards
+  - Custom Decorator
+- Deployment
+  - AWS EC2, RDS
+  - Zero downtime Deployment with PM2
+  - Deployment Automation with Github Actions
+
+## Prerequisites
+
+- Node.js version 16 should be installed
+
+```bash
+$ sudo curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+$ sudo apt-get install -y nodejs
+```
+
+- pm2 should be installed for global environment
+
+```bash
+$ npm install -g pm2
+```
 
 ## Installation
 
@@ -48,6 +89,12 @@ $ npm run build
 # development mode
 $ npm run start:dev
 
-# production mode
+# production mode start
 $ npm run start:prod
+
+# production mode restart
+$ npm run restart
+
+# production mode end
+$ npm run end
 ```
